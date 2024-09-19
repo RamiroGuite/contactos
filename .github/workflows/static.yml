@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardar Contacto en Teléfono</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .contact-card {
+            background-color: #fff;
+            padding: 20px;
+            margin: auto;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .vcard-preview {
+            text-align: left;
+            margin-top: 20px;
+        }
+        button, a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        button:hover, a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contact-card">
+        <h1>Guardar Contacto</h1>
+        <div id="vcardPreview" class="vcard-preview">
+            <p><strong>Nombre:</strong> Juan Pérez</p>
+            <p><strong>Teléfono:</strong> +1234567890</p>
+            <p><strong>Email:</strong> juan.perez@example.com</p>
+            <p><strong>Dirección:</strong> Calle Ejemplo 123, Ciudad, País</p>
+        </div>
+        <button id="downloadVCard">Guardar Contacto</button>
+    </div>
+
+    <script>
+        // Información del contacto
+        const contact = {
+            name: 'Juan Pérez',
+            phone: '+1234567890',
+            email: 'juan.perez@example.com',
+            address: 'Calle Ejemplo 123, Ciudad, País'
+        };
+
+        // Crear el contenido del archivo vCard
+        function generateVCard(contact) {
+            return `BEGIN:VCARD
+VERSION:3.0
+FN:${contact.name}
+TEL:${contact.phone}
+EMAIL:${contact.email}
+ADR:;;${contact.address}
+END:VCARD`;
+        }
+
+        // Descargar el archivo vCard
+        function downloadVCard() {
+            const vCardData = generateVCard(contact);
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            // Crear un enlace temporal para descargar el archivo
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${contact.name}.vcf`; // Nombre del archivo
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Asignar la función al botón de descarga
+        document.getElementById('downloadVCard').addEventListener('click', downloadVCard);
+    </script>
+
+</body>
+</html>
